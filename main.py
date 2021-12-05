@@ -21,15 +21,11 @@ def flatList(dataArray: np.ndarray):
 
 def commandSubmarine(command):
     print(command)
-# Press the green button in the gutter to run the script.
-if __name__ == '__main__':
-    test = np.loadtxt("input.txt")
-    #inputCommand = np.loadtxt("inputCommand.txt")
-    sum = flatList(test)
-    #commandSubmarine(inputCommand)
+
+def commandInput(string = "inputCommand.txt"):
 
     lines = []
-    with open('inputCommand.txt') as f:
+    with open(string) as f:
         lines = f.readlines()
 
     countFor = 0
@@ -39,13 +35,49 @@ if __name__ == '__main__':
         x = line.split(" ")
         if x[0] == "forward":
             countFor = countFor + int(x[1])
+            countUp += aim*int(x[1])
         if x[0] == "up":
-            countUp = countUp +  int(x[1])
+            aim -= int(x[1])
+            #countUp = countUp +  int(x[1])
         if x[0] == "down":
             print(x)
-            countUp = countUp -int(x[1])
+            aim += int(x[1])
+            #countUp = countUp -int(x[1])
     print(countUp*countFor)
         #print(f'line {count}: {line}')
         #print(calculateNrOfIncrement(sum))
+# Press the green button in the gutter to run the script.
+
+def diagnosticReport(string = "diagnosticReportTest.txt"):
+    dRep = np.loadtxt("diagnosticReportTest.txt")
+    print(dRep)
+
+    lines = []
+    with open(string) as f:
+        lines = f.readlines()
+    binLength = len(lines[0])
+    print(binLength-1)
+    gamma = np.zeros(binLength-1)
+    epsilon = np.zeros(binLength - 1)
+
+
+    for i in range(binLength-1):
+        one = 0
+        zero = 0
+        for line in lines:
+            if int(line[i]) == 0:
+                zero += 1
+            elif int(line[i]) == 1:
+                one += 1
+        if one > zero:
+            gamma[i] = 1
+            epsilon[i] = 0
+        elif one < zero:
+            gamma[i] = 0
+            epsilon[i] = 1
+    print(gamma, epsilon)
+if __name__ == '__main__':
+    diagnosticReport()
+
 
 # See PyCharm help at https://www.jetbrains.com/help/pycharm/
