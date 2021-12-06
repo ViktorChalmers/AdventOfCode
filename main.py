@@ -1,46 +1,19 @@
+from tqdm import trange
 import numpy as np
-import matplotlib.pyplot as plt
-from functions import diagnosticReport
-from io import StringIO   # StringIO behaves like a file object
-
-def updateState(state,points):
-    if points[0] == points[1]:
-        print(f"column update, {points[0]},{points[2]} -> {points[1]},{points[3]}")
-        state[points[2]:points[3],points[0]] += 1
-    if points[2] == points[3]:
-        print(f"row update, {points[0]},{points[2]} -> {points[1]},{points[3]}")
-        state[points[2],points[0]:points[1]] += 1
-    #print(state)
-    return state
 
 if __name__ == '__main__':
-    with open('inputTest.txt') as f:
-        lines = f.readlines()
 
-    x1,x2,y1,y2 = [],[],[],[]
-    for line in lines:
-        x1.append(int(line.split("->")[0].split(",")[0]))
-        x2.append(int(line.split("->")[1].split(",")[0]))
-        y1.append(int(line.split("->")[0].split(",")[1]))
-        y2.append(int(line.split("->")[1].split(",")[1]))
-    print(x1)
-    print(x2)
-    print(y1)
-    print(y2)
-    lattice = 10
+    fishList = [1,5,5,1,5,1,5,3,1,3,2,4,3,4,1,1,3,5,4,4,2,1,2,1,2,1,2,1,5,2,1,5,1,2,2,1,5,5,5,1,1,1,5,1,3,4,5,1,2,2,5,5,3,4,5,4,4,1,4,5,3,4,4,5,2,4,2,2,1,3,4,3,2,3,4,1,4,4,4,5,1,3,4,2,5,4,5,3,1,4,1,1,1,2,4,2,1,5,1,4,5,3,3,4,1,1,4,3,4,1,1,1,5,4,3,5,2,4,1,1,2,3,2,4,4,3,3,5,3,1,4,5,5,4,3,3,5,1,5,3,5,2,5,1,5,5,2,3,3,1,1,2,2,4,3,1,5,1,1,3,1,4,1,2,3,5,5,1,2,3,4,3,4,1,1,5,5,3,3,4,5,1,1,4,1,4,1,3,5,5,1,4,3,1,3,5,5,5,5,5,2,2,1,2,4,1,5,3,3,5,4,5,4,1,5,1,5,1,2,5,4,5,5,3,2,2,2,5,4,4,3,3,1,4,1,2,3,1,5,4,5,3,4,1,1,2,2,1,2,5,1,1,1,5,4,5,2,1,4,4,1,1,3,3,1,3,2,1,5,2,3,4,5,3,5,4,3,1,3,5,5,5,5,2,1,1,4,2,5,1,5,1,3,4,3,5,5,1,4,3]
+    fishDir = [{"fish": i,"number": np.float64(fishList.count(i))} for i in range(9)]
+    days = 256
+    for day in range(days):
+        zero = np.copy(fishDir[0]["number"])
+        for i in range(8):
+            fishDir[i]["number"] = fishDir[i+1]["number"]
+        fishDir[6]["number"] += + zero
+        fishDir[8]["number"] = zero
+    count = 0
+    for number in fishDir:
+        count += number["number"]
+    print(count)
 
-    for i in range(len(x1)):
-        x1[i],x2[i] = max(x1[i],x2[i]),min(x1[i],x2[i])
-        x1[i], x2[i] = max(x1[i], x2[i]), min(x1[i], x2[i])
-    #for i in range(len(x1)):
-    #    print(x1[i],x2[i],y1[i],y2[i])
-    #    if x1[i] == x2[i] or y1[i]==y2[i]:
-    #        plt.plot([x1[i],x2[i]],[y1[i],y2[i]])
-
-
-    #state = np.zeros([11,11])
-    #for i in range(len(x1)):
-    #    state = updateState(state,[x1[i],x2[i],y1[i],y2[i]])
-
-    #print(state)
-    #plt.show()
