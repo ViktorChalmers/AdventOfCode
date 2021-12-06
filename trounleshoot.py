@@ -1,9 +1,10 @@
 lines = []
-with open("bingoInput.txt") as f:
+with open("Days/Day4/bingoInputTest.txt") as f:
     lines = f.readlines()
 
 
 randomDraws = lines[0].split(",")
+print(len(randomDraws))
 #print(randomDraws)
 boardLines = lines[2:]
 nrOfBoards = int((len(boardLines)+1) / 6)
