@@ -30,14 +30,17 @@ if __name__ == '__main__':
     lattice = 10
 
     for i in range(len(x1)):
-        print(x1[i],x2[i],y1[i],y2[i])
-        if x1[i] == x2[i] or y1[i]==y2[i]:
-            plt.plot([x1[i],x2[i]],[y1[i],y2[i]])
+        x1[i],x2[i] = max(x1[i],x2[i]),min(x1[i],x2[i])
+        x1[i], x2[i] = max(x1[i], x2[i]), min(x1[i], x2[i])
+    #for i in range(len(x1)):
+    #    print(x1[i],x2[i],y1[i],y2[i])
+    #    if x1[i] == x2[i] or y1[i]==y2[i]:
+    #        plt.plot([x1[i],x2[i]],[y1[i],y2[i]])
 
 
-    state = np.zeros([11,11])
-    for i in range(len(x1)):
-        state = updateState(state,[x1[i],x2[i],y1[i],y2[i]])
+    #state = np.zeros([11,11])
+    #for i in range(len(x1)):
+    #    state = updateState(state,[x1[i],x2[i],y1[i],y2[i]])
 
-    print(state)
-    plt.show()
+    #print(state)
+    #plt.show()
