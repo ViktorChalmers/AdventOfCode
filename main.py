@@ -1,19 +1,33 @@
-from tqdm import trange
+import matplotlib.pyplot as plt
 import numpy as np
-
 if __name__ == '__main__':
+    with open("input.txt") as f:
+        lines = f.readlines()
+    position = []
+    for line in lines[0].split(","):
+        position.append(int(line))
 
-    fishList = [1,5,5,1,5,1,5,3,1,3,2,4,3,4,1,1,3,5,4,4,2,1,2,1,2,1,2,1,5,2,1,5,1,2,2,1,5,5,5,1,1,1,5,1,3,4,5,1,2,2,5,5,3,4,5,4,4,1,4,5,3,4,4,5,2,4,2,2,1,3,4,3,2,3,4,1,4,4,4,5,1,3,4,2,5,4,5,3,1,4,1,1,1,2,4,2,1,5,1,4,5,3,3,4,1,1,4,3,4,1,1,1,5,4,3,5,2,4,1,1,2,3,2,4,4,3,3,5,3,1,4,5,5,4,3,3,5,1,5,3,5,2,5,1,5,5,2,3,3,1,1,2,2,4,3,1,5,1,1,3,1,4,1,2,3,5,5,1,2,3,4,3,4,1,1,5,5,3,3,4,5,1,1,4,1,4,1,3,5,5,1,4,3,1,3,5,5,5,5,5,2,2,1,2,4,1,5,3,3,5,4,5,4,1,5,1,5,1,2,5,4,5,5,3,2,2,2,5,4,4,3,3,1,4,1,2,3,1,5,4,5,3,4,1,1,2,2,1,2,5,1,1,1,5,4,5,2,1,4,4,1,1,3,3,1,3,2,1,5,2,3,4,5,3,5,4,3,1,3,5,5,5,5,2,1,1,4,2,5,1,5,1,3,4,3,5,5,1,4,3]
-    fishDir = [{"fish": i,"number": np.float64(fishList.count(i))} for i in range(9)]
-    days = 256
-    for day in range(days):
-        zero = np.copy(fishDir[0]["number"])
-        for i in range(8):
-            fishDir[i]["number"] = fishDir[i+1]["number"]
-        fishDir[6]["number"] += + zero
-        fishDir[8]["number"] = zero
+    print(position)
+    #position = [16,1,2,0,4,2,7,1,2,14]
+    print(np.median(position))
     count = 0
-    for number in fishDir:
-        count += number["number"]
-    print(count)
+    counta = 0
 
+    #print(sum(1,5))
+    length = max(position)
+    print(max(position))
+    tar = np.zeros(length)
+    for target in range(length):
+        #target = round(np.mean(position))
+        steps = np.array(position) - target
+        count = 0
+        counta = 0
+        #print(steps)
+        #print(round(np.mean(position)))
+        for step in steps:
+            counta += abs(step)
+            for i in range(abs(step)+1):
+                count += i
+        tar[target] = count
+        print(target,count)
+    print(min(tar))
