@@ -19,6 +19,7 @@ if __name__ == '__main__':
     count = 0
     print(target)
     for step in steps:
+        #count += (step**2+step)/2
         for i in range(abs(step)+1):
             count += i
     print(f"target = {target}, fuel consumption = {count}")
