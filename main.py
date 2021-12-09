@@ -1,58 +1,32 @@
-import matplotlib.pyplot as plt
 import numpy as np
-def decode(start,end):
-    dict = {chr(i):0 for i in range(97,104)}
+def getVonNeumannNeighbors(state,index):
+    expandedState = np.pad(state, 1, 'linear_ramp', end_values=(10, 10))
+    #print(expandedState)
+    index = index+1
 
-    for number in start:
-        if len(number) == 2:
-            one = number[0], number[1]
-        if len(number) == 4:
-            four = number[0], number[1], number[2], number[3]
-        for character in number:
-            dict[character] += 1
+    self = expandedState[index[0],index[1]]
+    up = expandedState[index[0]-1,index[1]]
+    down = expandedState[index[0]+1,index[1]]
+    left = expandedState[index[0],index[1]-1]
+    right = expandedState[index[0],index[1]+1]
+    list = np.array([int(up), int(down), int(left), int(right)])
 
-    dircRedirect = {
-    "a": [name for name, age in dict.items() if age == 8],
-    "b": [name for name, age in dict.items() if age == 6],
-    "c": [name for name, age in dict.items() if age == 8],
-    "d": [name for name, age in dict.items() if age == 7],
-    "e": [name for name, age in dict.items() if age == 4],
-    "f": [name for name, age in dict.items() if age == 9],
-    "g": [name for name, age in dict.items() if age == 7]
-    }
-    dircRedirect["c"] = [x for x in one if x in dircRedirect["c"]]
-    dircRedirect["a"] = [x for x in dircRedirect["a"] if x not in dircRedirect["c"]]
-    dircRedirect["d"] = [x for x in four if x in dircRedirect["d"]]
-    dircRedirect["g"] = [x for x in dircRedirect["g"] if x not in dircRedirect["d"]]
-    out = [[[name for name, age in dircRedirect.items() if age == [char]][0] for char in output] for output in end]
+    return [int(self), list]
 
-    outpp = []
-    for number in out:
-        chara = ""
-        for char in sorted(number):
-            chara += char
-        outpp.append(chara)
-    return outpp
+with open("input.txt") as f:
+    lines = f.readlines()
+    state = np.zeros([len(lines),len(lines[0])-1])
+    #print(lines)
+    for i in range(len(lines)):
+        line = lines[i].replace("\n","")
+        for j in range(len(line)):
+            state[i,j] = int(line[j])
 
-
-if __name__ == '__main__':
-    with open("input.txt") as f:
-        lines = f.readlines()
-    count = 0
-    numberCode = ["abcefg", "cf", "acdeg", "acdfg", "bcdf", "abdfg", "abdefg", "acf", "abcdefg", "abcdfg"]
-    output = []
-
-    for line in lines:
-        start2,end2 = line.replace("\n","").split(" | ")
-        start = start2.split(" ")
-        end = end2.split(" ")
-        string = decode(start,end)
-        out = ""
-        for number in string:
-            for i in range(len(numberCode)):
-                if number == numberCode[i]:
-                    out = out+str(i)
-        output.append(int(out))
-        print(f"{start2} | {end2} -> {string} = {out}")
-        break
-    print(sum(output))
+print(state)
+heightMap = 0
+for i in range(len(state)):
+    for j in range(len(state[0])):
+        [self, list] = getVonNeumannNeighbors(state,np.array([i,j]))
+        if all(x>self for x in list):
+            heightMap += self+1
+print(heightMap)
